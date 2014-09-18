@@ -1,0 +1,44 @@
+apply plugin: 'spring-boot'
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-data-jpa")
+	compile("org.springframework.boot:spring-boot-starter-security")
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("mysql:mysql-connector-java")
+	compile("com.mysema.querydsl:querydsl-apt:3.3.0")
+	compile("com.mysema.querydsl:querydsl-jpa:3.3.0")
+}
+
+sourceSets {
+	generated {
+		java {
+			srcDirs = ['src/main/generated-sources']
+		}
+	}
+}
+
+task generateMetaModel(type: JavaCompile, group: 'build', description: 'Generates the metamodel') {
+	source = sourceSets.main.java
+	classpath = configurations.compile
+	options.compilerArgs = [
+		"-proc:only",
+		"-processor", "com.mysema.query.apt.jpa.JPAAnnotationProcessor"
+	]
+	// specify output of generated code
+	destinationDir = sourceSets.generated.java.srcDirs.iterator().next()
+}
+
+compileJava {
+	dependsOn generateMetaModel
+	source generateMetaModel.destinationDir
+}
+
+compileGeneratedJava {
+	dependsOn generateMetaModel
+	options.warnings = false
+	classpath += sourceSets.main.runtimeClasspath
+}
+
+clean {
+	delete sourceSets.generated.java.srcDirs
+}

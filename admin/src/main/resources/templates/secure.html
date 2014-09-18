@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>Secure</title>
+</head>
+<body>
+<h1>Secure page</h1>
+<ul>
+	<li th:each="user : ${users}" th:text="${user.email}"></li>
+</ul>
+</body>
+</html>

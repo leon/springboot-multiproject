@@ -1,0 +1,13 @@
+apply plugin: 'spring-boot'
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-aop")
+	compile("org.springframework.boot:spring-boot-starter-web")
+	compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+	compile project(":domain")
+
+	compile("org.webjars:bootstrap:3.2.0")
+
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+}
